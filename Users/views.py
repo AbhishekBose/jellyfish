@@ -12,7 +12,7 @@ def index(request):
     return render(request,'accounts/index.html')
 
 def user_login(request):
-    context = {}
+   
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
@@ -20,8 +20,10 @@ def user_login(request):
         if user is not None:
             login(request,username)
             return render(request,'accounts/index.html')
-            
-    context['form']=form
+        else:
+            messages.info(request,"Username or password is incorrect")
+                        
+    context = {}
     return render(request,'registration/login.html',context)
 
 def sign_up(request):

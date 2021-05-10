@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.response import Response
-from .serializers import JobSerializer,CreateJobSerializer
+from .serializers import JobSerializer,CreateJobSerializer,UpdateJobSerializer
 from .models import Jobs
 
 from django.views.decorators.csrf import csrf_exempt
@@ -70,9 +70,9 @@ def JobUpdate(request,pk):
     except Jobs.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = JobSerializer(instance=jobs,data=request.data)
+    serializer = UpdateJobSerializer(instance=jobs,data=request.data)
     if serializer.is_valid():
-        serializer.save()
+        serializer.save(user=request.user)
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

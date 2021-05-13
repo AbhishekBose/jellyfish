@@ -11,7 +11,9 @@ class Jobs(models.Model):
     
     class JobStatus(models.TextChoices):
         IDLE = 'ID', _('Idle')
+        INITIATED = "INIT", _('Initiated')
         PENDING = 'PD', _('Pending')
+        STARTED = "ST", _('Started')
         FINISHED = 'FI', _('Finished')
         
 
@@ -21,7 +23,7 @@ class Jobs(models.Model):
     )
     modelName = models.CharField(max_length=50)
     training_data_path = models.CharField(max_length=200)
-    job_status = models.CharField(max_length=2,
+    job_status = models.CharField(max_length=4,
                 choices=JobStatus.choices,
                 default=JobStatus.IDLE
     )

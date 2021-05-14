@@ -1,3 +1,4 @@
+from django import http
 from django.shortcuts import render
 from django.http import HttpResponse,JsonResponse
 from django.contrib.auth.decorators import login_required
@@ -11,6 +12,9 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+
+from .tasks import celery_task
+
 # Create your views here.
 @login_required
 def index(request):
@@ -87,3 +91,8 @@ def JobDelete(request,pk):
 
     jobs.delete()
     return Response("Item successfully deleted",status=status.HTTP_204_NO_CONTENT)
+
+
+def JobTest(request):
+    celery_task.delay(10)
+    return HttpResponse("Done ")

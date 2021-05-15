@@ -24,3 +24,9 @@ class UpdateJobStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Jobs
         fields = ('id','job_status',"user")
+
+
+class TriggerJobSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Jobs
+        fields = ('id','job_status')

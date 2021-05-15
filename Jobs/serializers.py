@@ -18,3 +18,9 @@ class UpdateJobSerializer(serializers.ModelSerializer):
     class Meta:
         model = Jobs
         fields = ('id', 'modelName', 'training_data_path','job_status')
+
+
+class UpdateJobStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Jobs
+        fields = ('id','job_status',"user")

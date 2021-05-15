@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from rest_framework.decorators import api_view,permission_classes
 from rest_framework.response import Response
-from .serializers import JobSerializer,CreateJobSerializer,UpdateJobSerializer
+from .serializers import JobSerializer,CreateJobSerializer,UpdateJobSerializer,UpdateJobStatusSerializer
 from .models import Jobs
 
 from django.views.decorators.csrf import csrf_exempt
@@ -79,6 +79,24 @@ def JobUpdate(request,pk):
         serializer.save(user=request.user)
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+@api_view(["POST"])
+# @permission_classes([IsAuthenticated])
+def JobStatusUpdate(request,pk):
+    try:
+        jobs = Jobs.objects.get(id=pk)
+    except Jobs.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = UpdateJobStatusSerializer(instance=jobs,data=request.data)
+    if serializer.is_valid():
+        # serializer.save(user=request.user)
+        serializer.save()
+        return Response(serializer.data)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 
 @api_view(["DELETE"])

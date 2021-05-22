@@ -43,8 +43,11 @@ def sign_up(request):
     return render(request,'sign_up.html',context)
 
 def logout_view(request):
-	logout(request)
-	return HttpResponseRedirect("/")
+    logout(request)
+    return redirect("login")
+
+	# return HttpResponseRedirect("/")
+    
 
 def register_view(request):
 	form = UsersRegisterForm(request.POST or None)

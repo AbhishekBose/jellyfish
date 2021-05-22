@@ -6,4 +6,4 @@ class JobForm(forms.ModelForm):
     class Meta:
         model = Jobs
 
-        fields = ['modelName','training_data_path']
+        fields = ['modelName','model_type','learning_rate','epoch','classes','model_description']

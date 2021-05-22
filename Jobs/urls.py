@@ -19,4 +19,5 @@ urlpatterns = [
     path("job-create-page/",views.JobCreatePage,name="job-create-page"),
     path("job-update-page/<str:pk>",views.JobUpdatePage,name="job-update-page"),
     path("job-delete-page/<str:pk>",views.JobDeletePage,name="job-delete-page"),
+    path("job-trigger-action/<str:pk>",views.JobTriggerAction,name="job-trigger-action"),
 ]   

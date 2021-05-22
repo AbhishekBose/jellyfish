@@ -241,6 +241,31 @@ def JobTrigger(request,pk):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+@permission_classes([IsAuthenticated])
+def JobTriggerAction(request,pk):
+    try:
+        jobs = Jobs.objects.get(id=pk)
+        print(jobs)
+    except Jobs.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+        
+    if jobs.user != request.user:
+        return Response(request.data, status=status.HTTP_403_FORBIDDEN)
+    else:
+        if jobs.job_status != "ID":
+            return redirect("index")
+        data = {
+            "job_status":"INIT"
+        }
+        serializer = TriggerJobSerializer(instance=jobs,data=data)
+        if serializer.is_valid():
+            print("Serializer is valid")
+            serializer.save(user=request.user)
+            return redirect("index")
+            # return Response(serializer.data)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 @api_view(["DELETE"])
 @permission_classes([IsAuthenticated])
 def JobDelete(request,pk):

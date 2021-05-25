@@ -105,7 +105,7 @@ def JobCreate(request):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# @api_view(["POST"])
+
 @permission_classes([IsAuthenticated])
 def JobCreatePage(request):
     form = JobForm(request.POST or None)
@@ -122,11 +122,7 @@ def JobCreatePage(request):
         "form":form
     }
     return render(request,"job_create.html",context)
-    # serializer = CreateJobSerializer(data=request.data)
-    # if serializer.is_valid():
-    #     serializer.save(user=request.user)
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED)
-    # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUES
+
 
 @api_view(["POST"])
 @permission_classes([IsAuthenticated])
@@ -164,11 +160,7 @@ def JobUpdatePage(request,pk):
         return Response(status=status.HTTP_404_NOT_FOUND)
 
     return render(request,"job_update.html",context)
-    # serializer = UpdateJobSerializer(instance=jobs,data=request.data)
-    # if serializer.is_valid():
-    #     serializer.save(user=request.user)
-    #     return Response(serializer.data)
-    # return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+   
 @permission_classes([IsAuthenticated])
 def JobDeletePage(request,pk):
     try:
@@ -236,8 +228,8 @@ def JobTrigger(request,pk):
         if serializer.is_valid():
             print("Serializer is valid")
             serializer.save(user=request.user)
-            
             return Response(serializer.data)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -260,7 +252,9 @@ def JobTriggerAction(request,pk):
         serializer = TriggerJobSerializer(instance=jobs,data=data)
         if serializer.is_valid():
             print("Serializer is valid")
+            Trigger.trigger_job(user=jobs.user.id,job_id =jobs.id,)
             serializer.save(user=request.user)
+            
             return redirect("index")
             # return Response(serializer.data)
 
